@@ -1,9 +1,9 @@
-import epress, { NextFunction, Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import userRouter from './user/userRouter';
 
-const app = epress();
-
+const app = express();
+app.use(express.json())
 //Routes
 
 app.get('/', (req,res,next)=>{
