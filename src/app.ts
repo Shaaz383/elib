@@ -1,7 +1,6 @@
 import epress, { NextFunction, Request, Response } from 'express';
-import createHttpError, { HttpError } from 'http-errors';
-import { config } from './config/config';
 import globalErrorHandler from './middlewares/globalErrorHandler';
+import userRouter from './user/userRouter';
 
 const app = epress();
 
@@ -17,6 +16,9 @@ app.get('/', (req,res,next)=>{
 });
 
 //global error handler
-app.use(globalErrorHandler        )
+app.use(globalErrorHandler);
+
+//routes
+app.use("/api/users",userRouter)
 
 export default app;
