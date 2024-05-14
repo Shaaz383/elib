@@ -70,7 +70,46 @@ const createUser =async (req :Request,res: Response,next : NextFunction) =>{
 }
 
 const loginUser = async (req :Request,res: Response,next : NextFunction) =>{
-    res.json({message : "OK"})
+  const {email,password} = req.body;
+  //validation (you can use express validator library also)
+  if(!email ||!password){
+    const error = createHttpError(400, "All fields are required")
+    return next(error)
+  }
+
+  const user = await userModel.findOne({email});
+  if(!user){
+    const error = createHttpError(400, "User not found")
+    return next(error)
+  }
+
+  const isMatch = await bcrypt.compare(password,user.password); //true or false
+  if(!isMatch){
+    const error = createHttpError(400, "Invalid Credentials")
+    return next(error)
+  }
+
+  //Token Generation JWT
+  try {
+    const token = sign({sub: user._id} , config.jswtSecret as string,
+    {
+      expiresIn:"7d",
+      algorithm : "HS256"
+    })
+  
+    //response
+  
+    res.status(201).json({accessToken : token})
+    
+  } catch (error) {
+    return next(createHttpError(500, "Error while signing jwt token "))
+    
+  }
+
+
+
+
+  res.json({message : "OK"})
 }
 
 
