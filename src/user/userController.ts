@@ -53,7 +53,7 @@ const createUser =async (req :Request,res: Response,next : NextFunction) =>{
 
   //Token Generation JWT
   try {
-    const token = sign({sub: newUser._id} , config.jswtSecret as string ,
+    const token = sign({sub: newUser._id} , config.jwtSecret as string ,
     {
       expiresIn:"7d",
       algorithm : "HS256"
@@ -91,7 +91,7 @@ const loginUser = async (req :Request,res: Response,next : NextFunction) =>{
 
   //Token Generation JWT
   try {
-    const token = sign({sub: user._id} , config.jswtSecret as string,
+    const token = sign({sub: user._id} , config.jwtSecret as string,
     {
       expiresIn:"7d",
       algorithm : "HS256"
